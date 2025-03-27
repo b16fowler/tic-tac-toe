@@ -1,17 +1,25 @@
+/*
+* Tic-tac-toe game made using React documentation as a React tutorial.
+* Standard tic-tac-toe rules, game checks for and declares a winner.
+* History of moves kept to revert to previous game states.
+*/
+
 import {useState} from 'react';
 
+// Default Game component oversees entire board state
 export default function Game() {
-  const xIsNext = currentMove % 2 === 0;
-  const [history, setHistory] = useState([Array(9).fill(null)]);
-  const [currentMove, setCurrentMove] = useState(0);
-  const currentSquares = history[currentMove];
+  const [history, setHistory] = useState([Array(9).fill(null)]); // history starts as empty array of arrays to keep past board states
+  const [currentMove, setCurrentMove] = useState(0);             // currentMove tracks move number, both for whose turn it is and React keys
+  const currentSquares = history[currentMove];                   // currentSquares holds array of null, X's, or O's. Is current board state
+  const xIsNext = currentMove % 2 === 0;                         // xIsNext is off if X's turn, and even if O's turn
 
   function handlePlay(nextSquares) {
     const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
     setHistory(nextHistory);
     setCurrentMove(nextHistory.length - 1);
   }
-
+  
+  // Reverts game to a previous turn
   function jumpTo(nextMove) {
     setCurrentMove(nextMove);
   }
@@ -43,7 +51,7 @@ export default function Game() {
         <ol>{moves}</ol>
       </div>
     </div>
-  )
+  );
 }
 
 function Board({xIsNext, squares, onPlay}) {
@@ -91,7 +99,7 @@ function Board({xIsNext, squares, onPlay}) {
         <Square value={squares[8]} onSquareClick={() => handleClick(8)}/>
       </div>
     </>
-  )
+  );
 }
 
 function Square({value, onSquareClick}) {
